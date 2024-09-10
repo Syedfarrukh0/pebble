@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import url('/public/spinnaker/Spinnaker-Regular.ttf');
+@font-face {
+  font-family: 'spinnaker';
+  src: url('/public/spinnaker/Spinnaker-Regular.ttf');
+} */
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  /* font-family: 'spinnaker', serif; */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* .video-container:hover .play-btn {
+  opacity: 1;
+  scale: 1;
+} */
+
+/* .video-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  height: 150px;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s ease;
+  z-index: 1;
+}
+
+.video-container:hover .play-btn {
+  opacity: 1;
+  scale: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  scale: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 2;
+}
+
+.video-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  scale: 0;
+  z-index: 2;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+} */
