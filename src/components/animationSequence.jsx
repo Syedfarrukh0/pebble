@@ -308,7 +308,7 @@ const AnimationSequence = () => {
           backgroundImage: "url(/bg.jpg)",
         }}
       >
-        <div className="border-2 border-[red] bg-transparent w-full h-[100vh] relative flex justify-center">
+        <div className="border--2 border-[red] bg-transparent w-full h-[100vh] relative flex justify-center">
           <img
             className="absolute relativee bottom--0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-[4]"
             src="/bg-2.png"
@@ -429,7 +429,7 @@ const AnimationSequence = () => {
           <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000"}}>×</span>
         </div>
 
-          <div className="play_btn border--2 border-[red] w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
+          <div className="play_btn w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
             <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
           </div>
 
