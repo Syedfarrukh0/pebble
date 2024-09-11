@@ -207,7 +207,6 @@ const AnimationSequence = () => {
 
   // Open menu bar horizontally
   const handleMouseEnter = () => {
-    setIsHovered(true);
     gsap.to(".menu-container", {
       width: "27rem",
       duration: 0.5,
@@ -230,14 +229,12 @@ const AnimationSequence = () => {
     });
   };
   const handleMouseLeave = () => {
-    setIsHovered(false);
     gsap.to(".menu-container", {
       width: "13rem",
       duration: 0.5,
       ease: "power2.out",
       delay: 0.5, // Delay to start after the previous animation
     });
-
     gsap.to(".menu-list", {
       opacity: 0,
       y: 100, 
