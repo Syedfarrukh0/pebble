@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import SplitType from "split-type";
+import { BsPlayCircle } from "react-icons/bs";
 
 const AnimationSequence = () => {
   const [count, setCount] = useState(1);
@@ -136,38 +137,17 @@ const AnimationSequence = () => {
 
     // Expand video container on click
     const handleVideoClick = () => {
-      gsap.to(".video-container", {
-        // position: 'absolute',
+      gsap.to(videoRef.current, {
+        position: 'absolute',
         duration: 0.6,
-        xPercent: -50,
-        yPercent: -50,
-        left: "50%",
-        top: "50%",
+        right: "unset",
         width: "95%",
         height: "95%",
         ease: "power2.out",
         zIndex: 100, // Ensure the video container is on top
         onComplete: () => {
           gsap.to(".video-close-btn", { opacity: 1, scale: 1 });
-        },
-      });
-    };
-
-    // Close video container
-    const handleCloseClick = () => {
-      gsap.to(".video-container", {
-        duration: 0.6,
-        // xPercent: 0,
-        // yPercent: 0,
-        // // position: "fixed",
-        // bottom: "20px",
-        // right: "20px",
-        width: "20rem",
-        height: "15rem",
-        ease: "power2.inOut",
-        zIndex: 1, // Reset the z-index
-        onComplete: () => {
-          gsap.to(".video-close-btn", { opacity: 0, scale: 0 });
+          gsap.to(".play_btn", { opacity: 0, scale: 0 });
         },
       });
     };
@@ -192,6 +172,22 @@ const AnimationSequence = () => {
     };
 
   }, []);
+
+   // Close video container
+   const handleCloseClick = () => {
+    gsap.to(videoRef.current, {
+      duration: 0.6,
+      right: "20px",
+      width: "20rem",
+      height: "15rem",
+      ease: "power2.inOut",
+      zIndex: 1, // Reset the z-index
+      onComplete: () => {
+        gsap.to(".video-close-btn", { opacity: 0, scale: 0 });
+        gsap.to(".play_btn", { opacity: 1, scale: 1 });
+      },
+    });
+  };
 
   return (
     <div
@@ -378,14 +374,14 @@ const AnimationSequence = () => {
 
       {/* Video Container */}
       <div
-        className="video-container absolute bottom-10 right-10"
+        className="video-container"
         ref={videoRef}
         style={{
           border: "3px solid #fff",
           borderRadius: "1rem",
-          // position: "absolute",
-          // bottom: "20px",
-          // right: "20px",
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
           width: "20rem",
           height: "15rem",
           background: "#000",
@@ -400,6 +396,7 @@ const AnimationSequence = () => {
           autoPlay
           muted
           loop
+          controls
           style={{
             width: "100%",
             height: "100%",
@@ -410,6 +407,7 @@ const AnimationSequence = () => {
         <div
           className="video-close-btn"
           ref={closeBtnRef}
+          onClick={handleCloseClick}
           style={{
             position: "absolute",
             top: "10px",
@@ -428,8 +426,13 @@ const AnimationSequence = () => {
             transition: "opacity 0.1s ease, transform 0.1s ease",
           }}
         >
-          <span style={{ fontSize: "20px", fontWeight: "bold" }}>×</span>
+          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000"}}>×</span>
         </div>
+
+          <div className="play_btn border--2 border-[red] w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
+            <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
+          </div>
+
       </div>
     </div>
   );
