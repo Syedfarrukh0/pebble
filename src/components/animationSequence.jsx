@@ -129,6 +129,13 @@ const AnimationSequence = () => {
           { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
         );
 
+        // Animate the logo from top to top-left side when the page loads
+        gsap.fromTo(
+          ".logo-container",
+          { y: -100, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
+        );
+
         // Video flip-up animation
         gsap.fromTo(
           ".video-container",
@@ -187,8 +194,8 @@ const AnimationSequence = () => {
     gsap.to(videoRef.current, {
       duration: 0.6,
       right: "30px",
-      width: "20rem",
-      height: "15rem",
+      width: "26rem",
+      height: "19rem",
       ease: "power2.inOut",
       zIndex: 1, // Reset the z-index
       onComplete: () => {
@@ -198,6 +205,7 @@ const AnimationSequence = () => {
     });
   };
 
+  // Open menu bar horizontally
   const handleMouseEnter = () => {
     setIsHovered(true);
     gsap.to(".menu-container", {
@@ -221,7 +229,6 @@ const AnimationSequence = () => {
       }
     });
   };
-
   const handleMouseLeave = () => {
     setIsHovered(false);
     gsap.to(".menu-container", {
@@ -348,9 +355,17 @@ const AnimationSequence = () => {
         </div>
       </div>
 
+      {/* logo div */}
+      <div
+        className="logo-container fixed top-5 left-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0 z-50"
+        style={{ width: "5rem", height: "5rem" }}
+      >
+        
+      </div>
+
       {/* Triangle to Square Animation */}
       <div
-        className="animated-shape overflow--hidden"
+        className="animated-shape"
         style={{
           position: "absolute",
           width: "0",
@@ -470,8 +485,8 @@ const AnimationSequence = () => {
           position: "absolute",
           bottom: "20px",
           right: "30px",
-          width: "20rem",
-          height: "15rem",
+          width: "26rem",
+          height: "19rem",
           background: "#000",
           cursor: "pointer",
           overflow: "hidden",
