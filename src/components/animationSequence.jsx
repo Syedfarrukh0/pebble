@@ -162,10 +162,17 @@ const AnimationSequence = () => {
         height: "95%",
         ease: "power2.out",
         zIndex: 100, // Ensure the video container is on top
+        filter: "blur(0px)",
         onComplete: () => {
           gsap.to(".video-close-btn", { opacity: 1, scale: 1 });
           gsap.to(".play_btn", { opacity: 0, scale: 0 });
         },
+      });
+      // Add background color and blur effect
+      gsap.to(".blur-overlay", {
+        filter: "blur(5px)",
+        duration: 0.6,
+        zIndex: 70
       });
     };
 
@@ -217,15 +224,15 @@ const AnimationSequence = () => {
       display: "none",
       duration: 0.5,
       ease: "power2.out",
-      onComplete: ()=>{
+      onComplete: () => {
         gsap.to(".menu-list", {
           opacity: 1,
-          y: 0, 
+          y: 0,
           display: "flex",
           duration: 0.5,
           ease: "power2.out",
         });
-      }
+      },
     });
   };
   const handleMouseLeave = () => {
@@ -237,7 +244,7 @@ const AnimationSequence = () => {
     });
     gsap.to(".menu-list", {
       opacity: 0,
-      y: 100, 
+      y: 100,
       display: "none",
       duration: 0.5,
       ease: "power2.out",
@@ -248,7 +255,7 @@ const AnimationSequence = () => {
           duration: 0.5,
           ease: "power2.out",
         });
-      }
+      },
     });
   };
 
@@ -257,6 +264,7 @@ const AnimationSequence = () => {
       className="header-container border-2 border-[orange] h-full flex items-center justify-center"
       style={{ position: "relative", width: "100vw", overflow: "hidden" }}
     >
+      <div className="blur-overlay bg-[#D7D1C6] blur-sm w-full h-full z-[-1]"></div>
       {/* Custom Loader Animation */}
       <div
         className="loader-container"
@@ -354,11 +362,9 @@ const AnimationSequence = () => {
 
       {/* logo div */}
       <div
-        className="logo-container fixed top-5 left-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0 z-50"
+        className="logo-container fixed top-5 left-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0 z-10"
         style={{ width: "5rem", height: "5rem" }}
-      >
-        
-      </div>
+      ></div>
 
       {/* Triangle to Square Animation */}
       <div
