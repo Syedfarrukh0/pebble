@@ -4,14 +4,17 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import SplitType from "split-type";
-import { BsPlayCircle } from "react-icons/bs";
+// import { BsPlayCircle } from "react-icons/bs";
+import { BsPlayCircle, BsList } from "react-icons/bs"; // Add hamburger icon
 
 const AnimationSequence = () => {
   const [count, setCount] = useState(1);
   const textRef = useRef(null);
   const videoRef = useRef(null); // Ref for the video container
   const closeBtnRef = useRef(null); // Ref for the close button
-  const [isVideoExpanded, setIsVideoExpanded] = useState(false);
+  // const [isVideoExpanded, setIsVideoExpanded] = useState(false);
+  const menuRef = useRef(null); // Ref for the hidden menu
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -119,6 +122,13 @@ const AnimationSequence = () => {
           }
         );
 
+        // Animate the menu from top to top-right side when the page loads
+        gsap.fromTo(
+          ".menu-container",
+          { y: -100, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
+        );
+
         // Video flip-up animation
         gsap.fromTo(
           ".video-container",
@@ -138,10 +148,10 @@ const AnimationSequence = () => {
     // Expand video container on click
     const handleVideoClick = () => {
       gsap.to(videoRef.current, {
-        position: 'absolute',
+        position: "fixed",
         duration: 0.6,
         right: "unset",
-        width: "95%",
+        width: "98%",
         height: "95%",
         ease: "power2.out",
         zIndex: 100, // Ensure the video container is on top
@@ -170,14 +180,13 @@ const AnimationSequence = () => {
         closeBtnElement.removeEventListener("click", handleCloseClick);
       }
     };
-
   }, []);
 
-   // Close video container
-   const handleCloseClick = () => {
+  // Close video container
+  const handleCloseClick = () => {
     gsap.to(videoRef.current, {
       duration: 0.6,
-      right: "20px",
+      right: "30px",
       width: "20rem",
       height: "15rem",
       ease: "power2.inOut",
@@ -189,9 +198,59 @@ const AnimationSequence = () => {
     });
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    gsap.to(".menu-container", {
+      width: "27rem",
+      duration: 0.5,
+      ease: "power2.out",
+    });
+    gsap.to(".line", {
+      opacity: 0,
+      display: "none",
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: ()=>{
+        gsap.to(".menu-list", {
+          opacity: 1,
+          y: 0, 
+          display: "flex",
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      }
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    gsap.to(".menu-container", {
+      width: "13rem",
+      duration: 0.5,
+      ease: "power2.out",
+      delay: 0.5, // Delay to start after the previous animation
+    });
+
+    gsap.to(".menu-list", {
+      opacity: 0,
+      y: 100, 
+      display: "none",
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => {
+        gsap.to(".line", {
+          opacity: 1,
+          display: "block",
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      }
+    });
+  };
+
   return (
     <div
-      className="border-2 border-[orange] h-full flex items-center justify-center"
+      className="header-container border-2 border-[orange] h-full flex items-center justify-center"
       style={{ position: "relative", width: "100vw", overflow: "hidden" }}
     >
       {/* Custom Loader Animation */}
@@ -372,6 +431,35 @@ const AnimationSequence = () => {
         </div>
       </div>
 
+      {/* Hamburger Menu */}
+      <div
+        className="menu-container fixed top-5 right-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0"
+        style={{ width: "13rem", height: "5rem" }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Hamburger Icon */}
+        <div className="hamburger p-3 cursor-pointer overflow-hidden">
+          <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
+          <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
+          <div className="line bg-gray-700 h-[2px] w-5"></div>
+
+          <div className="menu-list text-[#000] text-sm gap-4 hidden translate-y-[100%]">
+            <div>Product</div>
+            <div>App</div>
+            <div>Company</div>
+            <div>Community</div>
+          </div>
+        </div>
+
+        <div
+          className="menu-bar bg-[#D7D1C6] rounded-xl flex items-center justify-center px-4 overflow-hidden cursor-pointer"
+          style={{ minWidth: "9rem", height: "100%" }}
+        >
+          <span className="font-medium text-sm text-[#000]">PREORDER</span>
+        </div>
+      </div>
+
       {/* Video Container */}
       <div
         className="video-container"
@@ -381,7 +469,7 @@ const AnimationSequence = () => {
           borderRadius: "1rem",
           position: "absolute",
           bottom: "20px",
-          right: "20px",
+          right: "30px",
           width: "20rem",
           height: "15rem",
           background: "#000",
@@ -426,13 +514,14 @@ const AnimationSequence = () => {
             transition: "opacity 0.1s ease, transform 0.1s ease",
           }}
         >
-          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000"}}>×</span>
+          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000" }}>
+            ×
+          </span>
         </div>
 
-          <div className="play_btn w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
-            <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
-          </div>
-
+        <div className="play_btn w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
+          <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
+        </div>
       </div>
     </div>
   );
