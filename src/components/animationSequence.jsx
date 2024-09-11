@@ -375,7 +375,6 @@ const AnimationSequence = () => {
           transform: "translate(-50%, -50%)",
           display: "none", // Initially hidden
           zIndex: 0,
-          // overflow: 'hidden', // Ensure content stays within bounds
           backgroundImage: "url(/bg.jpg)",
         }}
       >
