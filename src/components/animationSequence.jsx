@@ -164,14 +164,15 @@ const AnimationSequence = () => {
         zIndex: 100, // Ensure the video container is on top
         filter: "blur(0px)",
         onComplete: () => {
-          gsap.to(".video-close-btn", { opacity: 1, scale: 1 });
           gsap.to(".play_btn", { opacity: 0, scale: 0 });
         },
       });
+      gsap.to(".video-close-btn", { opacity: 1, scale: 1, y: 0, duration: 0.6 });
       // Add background color and blur effect
       gsap.to(".blur-overlay", {
         filter: "blur(5px)",
-        duration: 0.6,
+        opacity: 1,
+        duration: 0.3,
         zIndex: 70
       });
     };
@@ -206,9 +207,16 @@ const AnimationSequence = () => {
       ease: "power2.inOut",
       zIndex: 1, // Reset the z-index
       onComplete: () => {
-        gsap.to(".video-close-btn", { opacity: 0, scale: 0 });
+        gsap.to(".video-close-btn", { opacity: 0, scale: 0, y: '2000%', duration: 0.5 });
         gsap.to(".play_btn", { opacity: 1, scale: 1 });
       },
+    });
+    // Add background color and blur effect
+    gsap.to(".blur-overlay", {
+      filter: "blur(0px)",
+      opacity: 0,
+      duration: 0.3,
+      zIndex: -1,
     });
   };
 
@@ -216,20 +224,20 @@ const AnimationSequence = () => {
   const handleMouseEnter = () => {
     gsap.to(".menu-container", {
       width: "27rem",
-      duration: 0.5,
+      duration: 0.3,
       ease: "power2.out",
     });
     gsap.to(".line", {
       opacity: 0,
       display: "none",
-      duration: 0.5,
+      duration: 0.4,
       ease: "power2.out",
       onComplete: () => {
         gsap.to(".menu-list", {
           opacity: 1,
           y: 0,
           display: "flex",
-          duration: 0.5,
+          duration: 0.4,
           ease: "power2.out",
         });
       },
@@ -241,21 +249,23 @@ const AnimationSequence = () => {
       duration: 0.5,
       ease: "power2.out",
       delay: 0.5, // Delay to start after the previous animation
-    });
-    gsap.to(".menu-list", {
-      opacity: 0,
-      y: 100,
-      display: "none",
-      duration: 0.5,
-      ease: "power2.out",
       onComplete: () => {
-        gsap.to(".line", {
-          opacity: 1,
-          display: "block",
-          duration: 0.5,
+        gsap.to(".menu-list", {
+          opacity: 0,
+          y: 2000,
+          display: "none",
+          duration: 0.4,
           ease: "power2.out",
+          onComplete: () => {
+            gsap.to(".line", {
+              opacity: 1,
+              display: "block",
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          },
         });
-      },
+      }
     });
   };
 
@@ -264,8 +274,10 @@ const AnimationSequence = () => {
       className="header-container border-2 border-[orange] h-full flex items-center justify-center"
       style={{ position: "relative", width: "100vw", overflow: "hidden" }}
     >
-      <div className="blur-overlay bg-[#D7D1C6] blur-sm w-full h-full z-[-1]"></div>
-      {/* Custom Loader Animation */}
+      {/* blur background */}
+      <div className="blur-overlay bg-[#D7D1C6] blur-sm w-full h-full z-[-1] opacity-0"></div>
+
+      {/* custom loader animation */}
       <div
         className="loader-container"
         style={{
@@ -510,17 +522,17 @@ const AnimationSequence = () => {
         />
         {/* Close Button */}
         <div
-          className="video-close-btn"
+          className="video-close-btn translate-y-[2000%]"
           ref={closeBtnRef}
           onClick={handleCloseClick}
           style={{
             position: "absolute",
-            top: "10px",
+            top: "50%",
             right: "10px",
-            width: "30px",
-            height: "30px",
+            width: "5rem",
+            height: "5rem",
             background: "#fff",
-            borderRadius: "50%",
+            borderRadius: "10%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -528,7 +540,8 @@ const AnimationSequence = () => {
             opacity: "0",
             scale: 0,
             zIndex: 2,
-            transition: "opacity 0.1s ease, transform 0.1s ease",
+            transition: 'all 0.5s ease-in-out'
+            // transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out, all 0.5s ease-in-out",
           }}
         >
           <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000" }}>
