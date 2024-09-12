@@ -224,7 +224,7 @@ const AnimationSequence = () => {
   const handleMouseEnter = () => {
     gsap.to(".menu-container", {
       width: "27rem",
-      duration: 0.3,
+      duration: 0.5,
       ease: "power2.out",
     });
     gsap.to(".line", {
