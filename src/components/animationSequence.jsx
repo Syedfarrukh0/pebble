@@ -7,7 +7,7 @@ import SplitType from "split-type";
 // import { BsPlayCircle } from "react-icons/bs";
 import { BsPlayCircle, BsList } from "react-icons/bs"; // Add hamburger icon
 
-const AnimationSequence = () => {
+const AnimationSequence = ({onComplete}) => {
   const [count, setCount] = useState(1);
   const textRef = useRef(null);
   const videoRef = useRef(null); // Ref for the video container
@@ -102,6 +102,7 @@ const AnimationSequence = () => {
       },
       clipPath: "",
       onComplete: () => {
+        onComplete();
         // Reveal and animate the text
         gsap.set(".welcome-text", { opacity: 1, scale: 1 }); // Ensure the text is visible
         const splitText = new SplitType(textRef.current, { types: "chars" });
@@ -167,13 +168,18 @@ const AnimationSequence = () => {
           gsap.to(".play_btn", { opacity: 0, scale: 0 });
         },
       });
-      gsap.to(".video-close-btn", { opacity: 1, scale: 1, y: 0, duration: 0.6 });
+      gsap.to(".video-close-btn", {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.6,
+      });
       // Add background color and blur effect
       gsap.to(".blur-overlay", {
         filter: "blur(5px)",
         opacity: 1,
         duration: 0.3,
-        zIndex: 70
+        zIndex: 70,
       });
     };
 
@@ -207,7 +213,12 @@ const AnimationSequence = () => {
       ease: "power2.inOut",
       zIndex: 1, // Reset the z-index
       onComplete: () => {
-        gsap.to(".video-close-btn", { opacity: 0, scale: 0, y: '2000%', duration: 0.5 });
+        gsap.to(".video-close-btn", {
+          opacity: 0,
+          scale: 0,
+          y: "2000%",
+          duration: 0.5,
+        });
         gsap.to(".play_btn", { opacity: 1, scale: 1 });
       },
     });
@@ -265,295 +276,298 @@ const AnimationSequence = () => {
             });
           },
         });
-      }
+      },
     });
   };
 
   return (
-    <div
-      className="header-container border-2 border-[orange] h-full flex items-center justify-center"
-      style={{ position: "relative", width: "100vw", overflow: "hidden" }}
-    >
-      {/* blur background */}
-      <div className="blur-overlay bg-[#D7D1C6] blur-sm w-full h-full z-[-1] opacity-0"></div>
-
-      {/* custom loader animation */}
+    <>
       <div
-        className="loader-container"
-        style={{
-          position: "relative",
-          width: "150px",
-          height: "150px",
-          // border: '2px solid #ccc', // Thin border
-          borderRadius: "50%",
-          margin: "auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1,
-        }}
+        className="header-container border-2 border-[orange] h-full flex items-center justify-center overflow-y-scroll"
+        style={{ position: "relative", width: "100vw", overflow: "hidden" }}
       >
-        {/* Logo in the center */}
+        {/* blur background */}
+        <div className="blur-overlay bg-[#D7D1C6] blur-sm w-full h-full z-[-1] opacity-0"></div>
+
+        {/* custom loader animation */}
         <div
-          className="logo p-5"
+          className="loader-container"
           style={{
-            position: "absolute",
-            fontSize: "1.5em",
-            color: "#333",
-            zIndex: 2,
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)", // Ensure logo is centered
-          }}
-        >
-          LOGO {/* Replace with your logo */}
-        </div>
-
-        {/* Orbiting Circles */}
-        <div
-          className="orbit-container"
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-          }}
-        >
-          {/* Circle 1 */}
-          <div
-            className="circle1"
-            style={{
-              position: "absolute",
-              width: "15px",
-              height: "15px",
-              backgroundColor: "#D7D1C6", // Circle color
-              borderRadius: "50%",
-              top: "0", // Position at the top of the loader
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-          ></div>
-
-          {/* Circle 2 */}
-          <div
-            className="circle2"
-            style={{
-              position: "absolute",
-              width: "15px",
-              height: "15px",
-              backgroundColor: "#D7D1C6", // Circle color
-              borderRadius: "50%",
-              bottom: "0", // Position at the bottom of the loader
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-          ></div>
-        </div>
-
-        {/* Loader Counting */}
-        <div
-          className="loader-counter"
-          style={{
-            position: "absolute",
-            top: "20rem", // Position below the loader
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontSize: "0.8em",
-            color: "#666",
-          }}
-        >
-          {count}/100
-        </div>
-      </div>
-
-      {/* logo div */}
-      <div
-        className="logo-container fixed top-5 left-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0 z-10"
-        style={{ width: "5rem", height: "5rem" }}
-      ></div>
-
-      {/* Triangle to Square Animation */}
-      <div
-        className="animated-shape"
-        style={{
-          position: "absolute",
-          width: "0",
-          height: "0",
-          borderLeft: "0px solid transparent",
-          borderRight: "0px solid transparent",
-          borderBottom: "0px solid transparent",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          display: "none", // Initially hidden
-          zIndex: 0,
-          backgroundImage: "url(/bg.jpg)",
-        }}
-      >
-        <div className="border--2 border-[red] bg-transparent w-full h-[100vh] relative flex justify-center">
-          <img
-            className="absolute relativee bottom--0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-[4]"
-            src="/bg-2.png"
-            alt="img.png"
-          />
-
-          {/* Welcome Text */}
-          <div
-            className="welcome-text font-bold text-center leading-[15rem] lowercase"
-            style={{
-              fontSize: "20rem",
-              color: "#fff",
-              opacity: 0, // Initially hidden
-              scale: 0.8, // Start with scaled down
-              zIndex: 2,
-              willChange: "opacity, transform", // For smoother animation
-              position: "absolute", // Position text absolutely
-              top: "32%",
-              left: "42%",
-              transform: "translate(-50%, -50%)",
-            }}
-            ref={textRef} // Attach ref here
-          >
-            {/* Wrap each word in a block element */}
-            <div>
-              {Array.from("Meet").map((char, index) => (
-                <span
-                  key={index}
-                  className="char"
-                  style={{ display: "inline-block" }}
-                >
-                  {char}
-                </span>
-              ))}
-            </div>
-            <br />
-            <div>
-              {Array.from("Pebble").map((char, index) => (
-                <span
-                  key={index}
-                  className="char"
-                  style={{ display: "inline-block" }}
-                >
-                  {char}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <img
-            src="/bg-3.jpg"
-            alt="img.png"
-            className="absolute bottom-0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-0"
-          />
-
-          <img
-            src="/bg-f.png"
-            alt="alt"
-            className="absolute bottom-0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-[5]"
-          />
-        </div>
-      </div>
-
-      {/* Hamburger Menu */}
-      <div
-        className="menu-container fixed top-5 right-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0"
-        style={{ width: "13rem", height: "5rem" }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Hamburger Icon */}
-        <div className="hamburger p-3 cursor-pointer overflow-hidden">
-          <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
-          <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
-          <div className="line bg-gray-700 h-[2px] w-5"></div>
-
-          <div className="menu-list text-[#000] text-sm gap-4 hidden translate-y-[100%]">
-            <div>Product</div>
-            <div>App</div>
-            <div>Company</div>
-            <div>Community</div>
-          </div>
-        </div>
-
-        <div
-          className="menu-bar bg-[#D7D1C6] rounded-xl flex items-center justify-center px-4 overflow-hidden cursor-pointer"
-          style={{ minWidth: "9rem", height: "100%" }}
-        >
-          <span className="font-medium text-sm text-[#000]">PREORDER</span>
-        </div>
-      </div>
-
-      {/* Video Container */}
-      <div
-        className="video-container"
-        ref={videoRef}
-        style={{
-          border: "3px solid #fff",
-          borderRadius: "1rem",
-          position: "absolute",
-          bottom: "20px",
-          right: "30px",
-          width: "26rem",
-          height: "19rem",
-          background: "#000",
-          cursor: "pointer",
-          overflow: "hidden",
-          zIndex: 1,
-          opacity: "0",
-        }}
-      >
-        <video
-          src="/pebble.mp4"
-          autoPlay
-          muted
-          loop
-          controls
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
-        {/* Close Button */}
-        <div
-          className="video-close-btn translate-y-[2000%]"
-          ref={closeBtnRef}
-          onClick={handleCloseClick}
-          style={{
-            position: "absolute",
-            top: "50%",
-            right: "10px",
-            width: "5rem",
-            height: "5rem",
-            background: "#fff",
-            borderRadius: "10%",
+            position: "relative",
+            width: "150px",
+            height: "150px",
+            borderRadius: "50%",
+            margin: "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            cursor: "pointer",
-            opacity: "0",
-            scale: 0,
-            zIndex: 2,
-            transition: 'all 0.5s ease-in-out'
-            // transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out, all 0.5s ease-in-out",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1,
           }}
         >
-          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#000" }}>
-            ×
-          </span>
+          {/* Logo in the center */}
+          <div
+            className="logo p-5"
+            style={{
+              position: "absolute",
+              fontSize: "1.5em",
+              color: "#333",
+              zIndex: 2,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)", // Ensure logo is centered
+            }}
+          >
+            LOGO {/* Replace with your logo */}
+          </div>
+
+          {/* Orbiting Circles */}
+          <div
+            className="orbit-container"
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              zIndex: 1,
+            }}
+          >
+            {/* Circle 1 */}
+            <div
+              className="circle1"
+              style={{
+                position: "absolute",
+                width: "15px",
+                height: "15px",
+                backgroundColor: "#D7D1C6", // Circle color
+                borderRadius: "50%",
+                top: "0", // Position at the top of the loader
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            ></div>
+
+            {/* Circle 2 */}
+            <div
+              className="circle2"
+              style={{
+                position: "absolute",
+                width: "15px",
+                height: "15px",
+                backgroundColor: "#D7D1C6", // Circle color
+                borderRadius: "50%",
+                bottom: "0", // Position at the bottom of the loader
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            ></div>
+          </div>
+
+          {/* Loader Counting */}
+          <div
+            className="loader-counter"
+            style={{
+              position: "absolute",
+              top: "20rem", // Position below the loader
+              left: "50%",
+              transform: "translateX(-50%)",
+              fontSize: "0.8em",
+              color: "#666",
+            }}
+          >
+            {count}/100
+          </div>
         </div>
 
-        <div className="play_btn w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
-          <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
+        {/* logo div */}
+        <div
+          className="logo-container fixed top-5 left-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0 z-10"
+          style={{ width: "5rem", height: "5rem" }}
+        ></div>
+
+        {/* Triangle to Square Animation */}
+        <div
+          className="animated-shape"
+          style={{
+            position: "absolute",
+            width: "0",
+            height: "0",
+            borderLeft: "0px solid transparent",
+            borderRight: "0px solid transparent",
+            borderBottom: "0px solid transparent",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            display: "none", // Initially hidden
+            zIndex: 0,
+            backgroundImage: "url(/bg.jpg)",
+          }}
+        >
+          <div className="border--2 border-[red] bg-transparent w-full h-[100vh] relative flex justify-center">
+            <img
+              className="absolute relativee bottom--0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-[4]"
+              src="/bg-2.png"
+              alt="img.png"
+            />
+
+            {/* Welcome Text */}
+            <div
+              className="welcome-text font-bold text-center leading-[15rem] lowercase"
+              style={{
+                fontSize: "20rem",
+                color: "#fff",
+                opacity: 0, // Initially hidden
+                scale: 0.8, // Start with scaled down
+                zIndex: 2,
+                willChange: "opacity, transform", // For smoother animation
+                position: "absolute", // Position text absolutely
+                top: "32%",
+                left: "42%",
+                transform: "translate(-50%, -50%)",
+              }}
+              ref={textRef} // Attach ref here
+            >
+              {/* Wrap each word in a block element */}
+              <div>
+                {Array.from("Meet").map((char, index) => (
+                  <span
+                    key={index}
+                    className="char"
+                    style={{ display: "inline-block" }}
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
+              <br />
+              <div>
+                {Array.from("Pebble").map((char, index) => (
+                  <span
+                    key={index}
+                    className="char"
+                    style={{ display: "inline-block" }}
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <img
+              src="/bg-3.jpg"
+              alt="img.png"
+              className="absolute bottom-0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-0"
+            />
+
+            <img
+              src="/bg-f.png"
+              alt="alt"
+              className="absolute bottom-0 top--[-10rem] left-0 object-cover w-full h-full scale-105 z-[5]"
+            />
+          </div>
+        </div>
+
+        {/* Hamburger Menu */}
+        <div
+          className="menu-container fixed top-5 right-3 m-4 bg-white rounded-2xl p-1 shadow-lg flex items-center justify-between opacity-0"
+          style={{ width: "13rem", height: "5rem" }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          {/* Hamburger Icon */}
+          <div className="hamburger p-3 cursor-pointer overflow-hidden">
+            <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
+            <div className="line bg-gray-700 h-[2px] w-5 mb-1"></div>
+            <div className="line bg-gray-700 h-[2px] w-5"></div>
+
+            <div className="menu-list text-[#000] text-sm gap-4 hidden translate-y-[100%]">
+              <div>Product</div>
+              <div>App</div>
+              <div>Company</div>
+              <div>Community</div>
+            </div>
+          </div>
+
+          <div
+            className="menu-bar bg-[#D7D1C6] rounded-xl flex items-center justify-center px-4 overflow-hidden cursor-pointer"
+            style={{ minWidth: "9rem", height: "100%" }}
+          >
+            <span className="font-medium text-sm text-[#000]">PREORDER</span>
+          </div>
+        </div>
+
+        {/* Video Container */}
+        <div
+          className="video-container"
+          ref={videoRef}
+          style={{
+            border: "3px solid #fff",
+            borderRadius: "1rem",
+            position: "absolute",
+            bottom: "20px",
+            right: "30px",
+            width: "26rem",
+            height: "19rem",
+            background: "#000",
+            cursor: "pointer",
+            overflow: "hidden",
+            zIndex: 1,
+            opacity: "0",
+          }}
+        >
+          <video
+            src="/pebble.mp4"
+            autoPlay
+            muted
+            loop
+            controls
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+          {/* Close Button */}
+          <div
+            className="video-close-btn translate-y-[2000%]"
+            ref={closeBtnRef}
+            onClick={handleCloseClick}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "10px",
+              width: "5rem",
+              height: "5rem",
+              background: "#fff",
+              borderRadius: "10%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              opacity: "0",
+              scale: 0,
+              zIndex: 2,
+              transition: "all 0.5s ease-in-out",
+              // transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out, all 0.5s ease-in-out",
+            }}
+          >
+            <span
+              style={{ fontSize: "20px", fontWeight: "bold", color: "#000" }}
+            >
+              ×
+            </span>
+          </div>
+
+          <div className="play_btn w-full h-full absolute top-[0%] left-[0%] flex justify-center items-center opacity-0 hover:opacity-[1] transition-all">
+            <BsPlayCircle className="text-[#fff] text-7xl font-bold" />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

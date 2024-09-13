@@ -1,13 +1,12 @@
 'use client'
 
 import CursorAnimation from "@/components/cursorAnimation";
-import Image from "next/image";
-import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import AnimationSequence from "@/components/animationSequence";
 
 
 export default function Home() {
+  const [animationComplete, setAnimationComplete] = useState(false);
   // const [showCursor, setShowCursor] = useState(false);
 
   // Function to handle when animation is complete
@@ -15,17 +14,33 @@ export default function Home() {
     setShowCursor(true); // Show cursor when animation is done
   };
 
+
+  // Function to handle when animation is complete
+  const handleAnimationCompleteHeader = () => {
+    setAnimationComplete(true); // Set animationComplete to true when animation is done
+  };
+
   
   return (
-    <main className="w-full h-screen overflow-hidden bg-[#F2EFE9]">
+    <main className={`w-full h-screen ${animationComplete ? 'overflow-y-scroll' : '' }  overflow-hidden bg-[#F2EFE9]`}>
       {/* <CursorAnimation /> */}
-      <AnimationSequence />
+
+      {/* Render AnimationSequence and pass handleAnimationComplete */}
+      <AnimationSequence onComplete={handleAnimationCompleteHeader} />
+
+      {/* Render additional content only after animation is complete */}
+      {animationComplete && (
+        <>
+          <div className="border-2 border-[green] w-full h-screen">
+
+          </div>
+        </>
+      )}
 
     </main>
   );
-
-  
 }
+
 // Hide the cursor initially, and show after zoom animation
 // useEffect(() => {
 //   if (showCursor) {
